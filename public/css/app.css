@@ -85,6 +85,73 @@ button, .button {
     color: #fff;
     cursor: pointer;
 }
+.hero {
+    margin-bottom: 2rem;
+}
+.hero h1 {
+    margin: .2rem 0;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+}
+.menu-section {
+    margin-top: 2rem;
+}
+.product-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.product-card, .cart-item, .summary-card {
+    display: grid;
+    gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(59, 36, 23, .08);
+}
+.product-card h3, .cart-item h2 {
+    margin-bottom: .3rem;
+}
+.product-card p, .cart-item p {
+    margin-top: 0;
+}
+.cart-list {
+    display: grid;
+    gap: 1rem;
+}
+.cart-item {
+    grid-template-columns: 1fr 1fr auto;
+    align-items: end;
+}
+.summary-card {
+    margin-top: 1rem;
+    align-items: center;
+    grid-template-columns: 1fr auto;
+}
+.order-card {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: #fff;
+}
+.status {
+    padding: .35rem .7rem;
+    border-radius: 999px;
+    background: #f2e5db;
+    text-transform: capitalize;
+}
+.order-detail {
+    padding: 1.2rem;
+    border-radius: 1rem;
+    background: #fff;
+}
+.ghost {
+    background: #ead8cc;
+    color: var(--coffee);
+}
 @media (max-width: 700px) {
     .site-header {
         flex-direction: column;
@@ -92,5 +159,11 @@ button, .button {
     .site-header nav {
         flex-wrap: wrap;
         justify-content: center;
+    }
+    .cart-item, .summary-card {
+        grid-template-columns: 1fr;
+    }
+    .order-card {
+        grid-template-columns: 1fr;
     }
 }

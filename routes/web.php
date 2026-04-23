@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect()->route('menu.index'));
+Route::get('/', [MenuController::class, 'index']);
 
 Route::middleware('guest')->group(function () {
     Route::get('/registro', [AuthController::class, 'showRegister'])->name('register');
@@ -13,3 +16,16 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
+Route::get('/carrito', [CartController::class, 'index'])->name('cart.index');
+Route::post('/carrito', [CartController::class, 'store'])->name('cart.store');
+Route::patch('/carrito/{idProducto}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/carrito/{idProducto}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/pedidos/nuevo', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/pedidos', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/pedidos/{pedido}', [OrderController::class, 'show'])->name('orders.show');
+});
