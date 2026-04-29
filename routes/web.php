@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MenuController::class, 'index']);
@@ -28,4 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/pedidos/nuevo', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/pedidos', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/pedidos/{pedido}', [OrderController::class, 'show'])->name('orders.show');
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 });

@@ -14,6 +14,9 @@
             <a href="{{ route('cart.index') }}">Carrito ({{ collect(session('cart', []))->sum('cantidad') }})</a>
             @auth
                 <a href="{{ route('orders.index') }}">Mis pedidos</a>
+                @if (auth()->user()->rol === 'administrador')
+                    <a href="{{ route('admin.dashboard') }}">Administración</a>
+                @endif
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit">Salir</button>

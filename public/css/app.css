@@ -148,6 +148,27 @@ button, .button {
     border-radius: 1rem;
     background: #fff;
 }
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+.metric-card {
+    display: grid;
+    gap: .5rem;
+    padding: 1.2rem;
+    border-radius: 1rem;
+    background: #fff;
+}
+.metric-card strong {
+    font-size: 2rem;
+}
+.admin-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
 .ghost {
     background: #ead8cc;
     color: var(--coffee);
