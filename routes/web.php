@@ -5,6 +5,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MenuController::class, 'index']);
@@ -33,4 +35,9 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/categorias', [CategoryController::class, 'store'])->name('categories.store');
+    Route::resource('productos', ProductController::class)
+        ->parameters(['productos' => 'producto'])
+        ->except('show')
+        ->names('products');
 });
