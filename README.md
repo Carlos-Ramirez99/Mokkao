@@ -11,6 +11,14 @@ Aplicación web Take Away para pedir café y recogerlo en sucursal.
 - Confirmación de pedidos básicos con sucursal, fecha y hora de recogida.
 - Consulta del estado y detalle de pedidos propios.
 
+## Sprint 2 incluido
+
+- Acceso restringido para administradores.
+- Panel de administración con métricas básicas.
+- Gestión de categorías.
+- Gestión completa de productos: crear, editar, ocultar y eliminar.
+- Gestión de pedidos: listado, filtrado, detalle y actualización de estado.
+
 ## Stack
 
 - PHP
@@ -44,3 +52,4 @@ php artisan migrate --seed
 - Contraseña: `admin12345`
 
 > El panel de administración se desarrollará en el Sprint 2; este usuario queda preparado desde la base de datos.
+> En el Sprint 2 el panel de administración ya está disponible en `/admin`.
