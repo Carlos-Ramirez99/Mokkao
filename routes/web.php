@@ -7,6 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MenuController::class, 'index']);
@@ -40,4 +41,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         ->parameters(['productos' => 'producto'])
         ->except('show')
         ->names('products');
+    Route::get('/pedidos', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/pedidos/{pedido}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::patch('/pedidos/{pedido}', [AdminOrderController::class, 'update'])->name('orders.update');
 });

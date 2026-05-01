@@ -215,6 +215,17 @@ th, td {
 .wide-card {
     max-width: 620px;
 }
+.filter-form {
+    display: flex;
+    grid-template-columns: none;
+    gap: .6rem;
+}
+.split-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+    align-items: start;
+}
 .ghost {
     background: #ead8cc;
     color: var(--coffee);
@@ -237,5 +248,9 @@ th, td {
         grid-template-columns: 1fr;
         flex-direction: column;
         align-items: stretch;
+    }
+    .filter-form, .split-grid {
+        display: grid;
+        grid-template-columns: 1fr;
     }
 }
