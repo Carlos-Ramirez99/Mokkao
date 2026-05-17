@@ -323,12 +323,131 @@ input, select, textarea {
 .auth-card h1 { text-align: center; font-size: 40px; }
 .auth-card form { display: grid; gap: 14px; }
 .auth-card button { min-height: 58px; border: 0; border-radius: 32px; background: var(--wine); color: #fff; }
-.dashboard-shell {
-  display: grid; grid-template-columns: 280px 1fr; gap: 36px; width: min(1380px, calc(100% - 48px)); margin: 42px auto 0;
+.admin-dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  width: min(1380px, calc(100% - 48px));
+  min-height: 680px;
+  margin: 42px auto 0;
+  overflow: hidden;
+  border-radius: 32px 0 0 32px;
+  background: #fff;
 }
-.sidebar { padding: 36px 24px; border-radius: 36px; background: var(--wine); color: #fff; }
-.sidebar a { display: block; margin-top: 12px; padding: 18px; border-radius: 999px; }
-.sidebar a.active { background: #fff; color: var(--wine); }
+.admin-sidebar {
+  min-height: 680px;
+  padding: 30px 0 30px 38px;
+  background: #971c15;
+  color: #fff;
+}
+.admin-sidebar h1 {
+  margin: 0 0 28px 18px;
+  font-size: 22px;
+}
+.admin-sidebar a {
+  display: block;
+  width: 100%;
+  margin-bottom: 2px;
+  padding: 14px 18px;
+  border-radius: 999px 0 0 999px;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.admin-sidebar a.active {
+  background: #fff;
+  color: #971c15;
+}
+.admin-sidebar a:hover {
+  background: rgba(255, 255, 255, .9);
+  color: #971c15;
+  transform: translateX(6px);
+}
+.admin-main {
+  padding: 28px 28px 58px 42px;
+}
+.admin-form-card {
+  margin: 0;
+}
+.admin-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+.admin-heading h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
+.admin-heading p,
+.admin-heading span {
+  margin: 0;
+  font-size: 13px;
+}
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 28px;
+  margin-top: 38px;
+}
+.admin-stats article {
+  min-height: 100px;
+  padding: 24px;
+  border-radius: 12px;
+  background: #f5f2ed;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .12);
+}
+.admin-stats h3,
+.admin-stats p {
+  margin: 0;
+  font-weight: 400;
+}
+.admin-stats h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.admin-orders-table {
+  margin-top: 52px;
+  overflow: hidden;
+  border: 1px solid rgba(68, 68, 68, .3);
+  border-radius: 28px;
+}
+.admin-orders-head,
+.admin-order-row {
+  display: grid;
+  grid-template-columns: 80px 120px 1fr 90px 100px;
+  align-items: center;
+}
+.admin-orders-head {
+  min-height: 54px;
+  padding: 0 70px;
+  background: #971c15;
+  color: #fff;
+}
+.admin-order-row {
+  min-height: 52px;
+  padding: 0 70px;
+  border-bottom: 1px solid rgba(68, 68, 68, .24);
+  font-size: 13px;
+}
+.admin-order-row:last-child {
+  border-bottom: 0;
+}
+.badge {
+  display: grid;
+  min-height: 20px;
+  place-items: center;
+  border-radius: 4px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+.paid {
+  background: #c8e6c9;
+  color: #2a7346;
+}
+.pending {
+  background: #ffe0b2;
+  color: #b87327;
+}
+.empty-row {
+  grid-template-columns: 1fr;
+}
 .metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 .metric-card, .panel, .order-card, .summary-card, .cart-item, .inline-card { padding: 24px; border-radius: 18px; background: var(--cream); }
 .profile-card { max-width: 520px; }
@@ -379,7 +498,7 @@ th, td { padding: 16px; border-bottom: 1px solid #eee; text-align: left; }
 @media (max-width: 900px) {
   .top-nav { flex-wrap: wrap; justify-content: center; margin: 24px auto; }
   .contact-pill { margin-left: 0; }
-  .showcase-grid, .products, .auth-shell, .dashboard-shell, .metric-grid { grid-template-columns: 1fr; }
+  .showcase-grid, .products, .auth-shell, .metric-grid, .admin-dashboard, .admin-stats { grid-template-columns: 1fr; }
   .section-heading, .title-row, .cart-item, .summary-card, .order-card, .split-grid { display: grid; grid-template-columns: 1fr; }
   footer { grid-template-columns: 1fr; }
   .newsletter { justify-self: stretch; }
@@ -403,5 +522,21 @@ th, td { padding: 16px; border-bottom: 1px solid #eee; text-align: left; }
   }
   .shop-card p {
     font-size: 18px;
+  }
+  .admin-sidebar {
+    padding: 24px;
+  }
+  .admin-sidebar a {
+    width: 100%;
+    border-radius: 999px;
+  }
+  .admin-main {
+    padding: 24px;
+  }
+  .admin-orders-head,
+  .admin-order-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 16px;
   }
 }
