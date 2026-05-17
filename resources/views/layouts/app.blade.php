@@ -4,31 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'Mokkao' }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
-<body>
-    <header class="site-header">
-        <a class="brand" href="{{ route('menu.index') }}">Mokkao</a>
-        <nav>
-            <a href="{{ route('menu.index') }}">Menú</a>
-            <a href="{{ route('cart.index') }}">Carrito ({{ collect(session('cart', []))->sum('cantidad') }})</a>
-            @auth
-                <a href="{{ route('orders.index') }}">Mis pedidos</a>
-                @if (auth()->user()->rol === 'administrador')
-                    <a href="{{ route('admin.dashboard') }}">Administración</a>
-                @endif
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit">Salir</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}">Entrar</a>
-                <a href="{{ route('register') }}">Registro</a>
-            @endauth
-        </nav>
-    </header>
-
-    <main class="page">
+<body class="@yield('body_class', 'default-page')">
+    @include('partials.header')
+    <div class="shipping">Envíos nacionales gratis en pedidos superiores a 39€ (Península)</div>
+    <main>
         @if (session('success'))
             <div class="flash success">{{ session('success') }}</div>
         @endif
@@ -41,5 +25,6 @@
         @endif
         @yield('content')
     </main>
+    @include('partials.footer')
 </body>
 </html>

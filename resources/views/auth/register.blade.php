@@ -1,27 +1,28 @@
 @extends('layouts.app')
+@section('body_class', 'register-page')
 
 @section('content')
-<section class="auth-card">
-    <p class="eyebrow">Nuevo cliente</p>
-    <h1>Crea tu cuenta</h1>
-    <form method="POST" action="{{ route('register.store') }}">
-        @csrf
-        <label>Nombre
-            <input name="nombre" value="{{ old('nombre') }}" required>
-        </label>
-        <label>Email
-            <input type="email" name="email" value="{{ old('email') }}" required>
-        </label>
-        <label>Teléfono
-            <input name="telefono" value="{{ old('telefono') }}">
-        </label>
-        <label>Contraseña
-            <input type="password" name="contrasena" required>
-        </label>
-        <label>Confirmar contraseña
-            <input type="password" name="contrasena_confirmation" required>
-        </label>
-        <button type="submit">Registrarme</button>
-    </form>
+<section class="auth-shell">
+    <aside class="auth-side">
+        <div>
+            <h2>¡Hola de nuevo!</h2>
+            <p>Inicia sesión para continuar</p>
+            <a class="light-button" href="{{ route('login') }}">Inicia sesión</a>
+        </div>
+    </aside>
+    <div class="auth-main">
+        <div class="auth-card">
+            <h1>Crear cuenta</h1>
+            <form method="POST" action="{{ route('register.store') }}">
+                @csrf
+                <input name="nombre" value="{{ old('nombre') }}" placeholder="Nombre" required>
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="Introduce tu email" required>
+                <input name="telefono" value="{{ old('telefono') }}" placeholder="Teléfono">
+                <input type="password" name="contrasena" placeholder="Introduce tu contraseña" required>
+                <input type="password" name="contrasena_confirmation" placeholder="Repite tu contraseña" required>
+                <button type="submit">Regístrate</button>
+            </form>
+        </div>
+    </div>
 </section>
 @endsection
