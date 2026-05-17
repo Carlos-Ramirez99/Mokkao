@@ -5,8 +5,8 @@
 <section class="shop-shell">
     <p>Home/Shop</p>
     <div class="products">
-        @foreach ($categorias->flatMap->productos as $index => $producto)
-            <article class="shop-card {{ $index % 3 === 0 ? 'dark' : '' }}">
+        @foreach ($categorias->flatMap->productos as $producto)
+            <article class="shop-card">
                 <div class="card-top">
                     <strong>{{ number_format($producto->precio, 2) }} €</strong>
                 </div>
