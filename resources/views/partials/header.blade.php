@@ -9,17 +9,22 @@
     </div>
     <a class="contact-pill" href="#contacto">Contacto</a>
     @auth
-        @if (auth()->user()->rol === 'administrador')
-            <a class="icon-pill text-icon" href="{{ route('admin.dashboard') }}" aria-label="Administración">A</a>
-        @else
-            <a class="icon-pill" href="{{ route('orders.index') }}" aria-label="Cuenta">
+        <details class="account-menu">
+            <summary class="icon-pill" aria-label="Cuenta">
                 <svg viewBox="0 0 35 35"><path d="M27.7083 30.625V27.7083C27.7083 26.1612 27.0937 24.6775 25.9998 23.5835C24.9058 22.4896 23.4221 21.875 21.875 21.875H13.125C11.5779 21.875 10.0942 22.4896 9.00021 23.5835C7.90625 24.6775 7.29167 26.1612 7.29167 27.7083V30.625M23.3333 10.2083C23.3333 13.43 20.7217 16.0417 17.5 16.0417C14.2783 16.0417 11.6667 13.43 11.6667 10.2083C11.6667 6.98667 14.2783 4.375 17.5 4.375C20.7217 4.375 23.3333 6.98667 23.3333 10.2083Z"/></svg>
-            </a>
-        @endif
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="icon-pill text-icon" aria-label="Salir">×</button>
-        </form>
+            </summary>
+            <div class="account-dropdown">
+                <a href="{{ route('profile.show') }}">Perfil</a>
+                <a href="{{ route('orders.index') }}">Mis pedidos</a>
+                @if (auth()->user()->rol === 'administrador')
+                    <a href="{{ route('admin.dashboard') }}">Administración</a>
+                @endif
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </details>
     @else
         <a class="icon-pill" href="{{ route('login') }}" aria-label="Cuenta">
             <svg viewBox="0 0 35 35"><path d="M27.7083 30.625V27.7083C27.7083 26.1612 27.0937 24.6775 25.9998 23.5835C24.9058 22.4896 23.4221 21.875 21.875 21.875H13.125C11.5779 21.875 10.0942 22.4896 9.00021 23.5835C7.90625 24.6775 7.29167 26.1612 7.29167 27.7083V30.625M23.3333 10.2083C23.3333 13.43 20.7217 16.0417 17.5 16.0417C14.2783 16.0417 11.6667 13.43 11.6667 10.2083C11.6667 6.98667 14.2783 4.375 17.5 4.375C20.7217 4.375 23.3333 6.98667 23.3333 10.2083Z"/></svg>

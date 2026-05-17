@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -29,6 +30,7 @@ Route::patch('/carrito/{idProducto}', [CartController::class, 'update'])->name('
 Route::delete('/carrito/{idProducto}', [CartController::class, 'destroy'])->name('cart.destroy');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/perfil', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/pedidos/nuevo', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/pedidos', [OrderController::class, 'store'])->name('orders.store');

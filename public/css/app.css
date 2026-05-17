@@ -87,6 +87,40 @@ main { min-height: 55vh; }
 .icon-pill span { position: absolute; right: 8px; top: 4px; min-width: 22px; border-radius: 999px; background: var(--wine); color: #fff; text-align: center; font-size: 12px; }
 .text-icon { font-size: 24px; }
 .top-nav form { margin: 0; }
+.account-menu { position: relative; }
+.account-menu summary {
+  list-style: none;
+  cursor: pointer;
+}
+.account-menu summary::-webkit-details-marker { display: none; }
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  z-index: 40;
+  display: grid;
+  min-width: 210px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 18px 40px rgba(23, 17, 15, .18);
+  backdrop-filter: blur(14px);
+  transform: translateX(-50%);
+}
+.account-dropdown a,
+.account-dropdown button {
+  width: 100%;
+  padding: 16px 18px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+.account-dropdown a:hover,
+.account-dropdown button:hover {
+  background: var(--wine);
+  color: #fff;
+}
 .shipping {
   display: grid; place-items: center; min-height: 40px; padding: 0 24px;
   background: var(--wine); color: #fff; text-transform: uppercase; text-align: center;
@@ -297,6 +331,7 @@ input, select, textarea {
 .sidebar a.active { background: #fff; color: var(--wine); }
 .metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 .metric-card, .panel, .order-card, .summary-card, .cart-item, .inline-card { padding: 24px; border-radius: 18px; background: var(--cream); }
+.profile-card { max-width: 520px; }
 .showcase-card,
 .shop-card,
 .metric-card,
