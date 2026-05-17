@@ -24,8 +24,11 @@ main { min-height: 55vh; }
   padding-top: 42px;
 }
 .top-nav {
+  position: sticky;
+  top: 24px;
+  z-index: 30;
   display: flex; align-items: center; gap: 18px;
-  width: min(1272px, calc(100% - 48px)); margin: 60px auto 64px;
+  width: min(1272px, calc(100% - 48px)); margin: 24px auto 24px;
 }
 .brand-dot {
   width: 65px; height: 65px; padding: 8px 7px 8px 6px; overflow: hidden;
