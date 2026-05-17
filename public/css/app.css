@@ -139,16 +139,103 @@ footer nav { display: flex; flex-direction: column; gap: 13px; font-size: 24px; 
 .statement a { position: absolute; right: 12%; bottom: 12%; display: grid; width: 150px; height: 150px; place-items: center; border-radius: 50%; background: #000; }
 .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 .shop-card {
-  position: relative; min-height: 430px; overflow: hidden; border-radius: 28px; padding: 24px; background: var(--cream);
+  position: relative;
+  display: flex;
+  min-height: 705px;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 48px;
+  padding: 34px 38px 0;
+  background: var(--cream);
 }
-.shop-card .card-top { display: flex; justify-content: space-between; align-items: center; }
-.shop-card strong { padding: 8px 14px; border-radius: 999px; background: #fff; color: var(--wine); }
-.shop-card img { position: absolute; left: 0; bottom: 0; width: 100%; height: 210px; object-fit: cover; }
-.shop-card form { position: relative; z-index: 2; display: grid; gap: 10px; margin-top: 18px; }
-.shop-card textarea, .shop-card input, input, select, textarea {
+.shop-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.shop-card-head strong {
+  display: grid;
+  min-width: 92px;
+  min-height: 54px;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--wine);
+  font-size: 24px;
+  font-weight: 500;
+}
+.shop-card-head form { margin: 0; }
+.shop-card-head button {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #000;
+}
+.shop-card-head svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+.shop-copy {
+  max-width: 330px;
+  padding: 28px 0 30px;
+}
+.shop-card h2 {
+  margin: 0 0 20px;
+  font-size: clamp(28px, 2.5vw, 42px);
+  font-weight: 500;
+  line-height: 1.06;
+}
+.shop-card p {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+}
+.shop-media {
+  position: relative;
+  min-height: 405px;
+  margin-inline: -38px;
+  margin-top: auto;
+  overflow: hidden;
+  border-radius: 48px;
+}
+.shop-card img {
+  width: 100%;
+  height: 405px;
+  object-fit: cover;
+}
+.shop-media a {
+  position: absolute;
+  left: 36px;
+  bottom: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 45px;
+  padding: 0 12px 0 28px;
+  border-radius: 999px;
+  background: rgba(18, 18, 18, .86);
+  color: #fff;
+  font-size: 20px;
+}
+.shop-media span {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--wine);
+}
+input, select, textarea {
   width: 100%; padding: 14px 16px; border: 0; border-radius: 24px; background: #fff;
 }
-.shop-card button { border: 0; border-radius: 999px; padding: 10px 16px; background: #050505; color: #fff; }
 .auth-shell {
   display: grid; grid-template-columns: 1fr 1fr; width: min(1267px, calc(100% - 48px)); min-height: 700px; margin: 84px auto 0;
   overflow: hidden; border-radius: 55px; background: var(--cream);
@@ -215,4 +302,18 @@ th, td { padding: 16px; border-bottom: 1px solid #eee; text-align: left; }
   .section-heading, .title-row, .cart-item, .summary-card, .order-card, .split-grid { display: grid; grid-template-columns: 1fr; }
   footer { grid-template-columns: 1fr; }
   .newsletter { justify-self: stretch; }
+  .shop-card {
+    min-height: 580px;
+    padding: 26px 24px 0;
+  }
+  .shop-media {
+    min-height: 320px;
+    margin-inline: -24px;
+  }
+  .shop-card img {
+    height: 320px;
+  }
+  .shop-card p {
+    font-size: 18px;
+  }
 }
