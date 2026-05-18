@@ -11,7 +11,12 @@
 </head>
 <body class="@yield('body_class', 'default-page')">
     @include('partials.header')
-    <div class="shipping">Envíos nacionales gratis en pedidos superiores a 39€ (Península)</div>
+    <div class="shipping" aria-label="Envíos nacionales gratis en pedidos superiores a 39€ (Península)">
+        <div class="shipping-track" aria-hidden="true">
+            <span>Envíos nacionales gratis en pedidos superiores a 39€ (Península)</span>
+            <span>Envíos nacionales gratis en pedidos superiores a 39€ (Península)</span>
+        </div>
+    </div>
     <main>
         @if (session('success'))
             <div class="flash success">{{ session('success') }}</div>

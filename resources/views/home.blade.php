@@ -32,7 +32,12 @@
 <section class="statement">
     <img src="{{ asset('appearance/home/img/561adc360b6cd90841c11f4edc1619ca9c7cd47e.png') }}" alt="Café Mokkao">
     <div>
-        <p>Shop Shop Shop Shop Shop Shop</p>
+        <div class="statement-marquee" aria-label="Shop Shop Shop Shop Shop Shop">
+            <p aria-hidden="true">
+                <span>Shop Shop Shop Shop Shop Shop</span>
+                <span>Shop Shop Shop Shop Shop Shop</span>
+            </p>
+        </div>
         <a href="{{ route('menu.index') }}">Ver más</a>
     </div>
 </section>
