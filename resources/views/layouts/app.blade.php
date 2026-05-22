@@ -8,9 +8,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="{{ asset('js/cart.js') }}" defer></script>
 </head>
-<body class="@yield('body_class', 'default-page')">
+<body class="@yield('body_class', 'default-page') {{ session('cart_preview') ? 'cart-preview-open' : '' }}">
     @include('partials.header')
+    @include('partials.cart-preview')
     <div class="shipping" aria-label="Envíos nacionales gratis en pedidos superiores a 39€ (Península)">
         <div class="shipping-track" aria-hidden="true">
             <span>Envíos nacionales gratis en pedidos superiores a 39€ (Península)</span>

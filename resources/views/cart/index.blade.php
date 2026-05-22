@@ -14,7 +14,7 @@
     @else
         <section class="cart-product-list">
             @foreach ($items as $item)
-                <article class="cart-product">
+                <article class="cart-product" data-cart-item="{{ $item['id_producto'] }}">
                     <form method="POST" action="{{ route('cart.destroy', $item['id_producto']) }}">
                         @csrf
                         @method('DELETE')
@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="cart-product-meta">
-                        <form class="cart-update-form" method="POST" action="{{ route('cart.update', $item['id_producto']) }}">
+                        <form class="cart-update-form js-cart-update-form" method="POST" action="{{ route('cart.update', $item['id_producto']) }}" data-cart-item-id="{{ $item['id_producto'] }}">
                             @csrf
                             @method('PATCH')
                             <label class="sr-only" for="cantidad-{{ $item['id_producto'] }}">Cantidad</label>
@@ -41,7 +41,7 @@
                                 <button
                                     type="button"
                                     aria-label="Restar una unidad"
-                                    onclick="this.parentElement.querySelector('input').stepDown()"
+                                    data-cart-step="-1"
                                 >−</button>
                                 <input
                                     id="cantidad-{{ $item['id_producto'] }}"
@@ -50,11 +50,12 @@
                                     min="1"
                                     max="20"
                                     value="{{ $item['cantidad'] }}"
+                                    data-cart-quantity-input
                                 >
                                 <button
                                     type="button"
                                     aria-label="Sumar una unidad"
-                                    onclick="this.parentElement.querySelector('input').stepUp()"
+                                    data-cart-step="1"
                                 >+</button>
                             </div>
                             <label class="sr-only" for="notas-{{ $item['id_producto'] }}">Notas</label>
@@ -65,10 +66,10 @@
                                 value="{{ $item['notas'] }}"
                                 placeholder="Notas o personalización"
                             >
-                            <button class="cart-update-button" type="submit">Actualizar</button>
+                            <button class="cart-update-button" type="submit">Guardar notas</button>
                         </form>
 
-                        <strong>{{ number_format($item['precio'] * $item['cantidad'], 2) }} €</strong>
+                        <strong data-cart-item-subtotal>{{ number_format($item['precio'] * $item['cantidad'], 2) }} €</strong>
                     </div>
                 </article>
             @endforeach
@@ -86,15 +87,15 @@
             <h2>Total del carrito</h2>
 
             @foreach ($items as $item)
-                <div class="cart-summary-row">
-                    <span>{{ $item['nombre'] }} × {{ $item['cantidad'] }}</span>
-                    <strong>{{ number_format($item['precio'] * $item['cantidad'], 2) }} €</strong>
+                <div class="cart-summary-row" data-cart-summary-item="{{ $item['id_producto'] }}">
+                    <span data-cart-summary-label>{{ $item['nombre'] }} × {{ $item['cantidad'] }}</span>
+                    <strong data-cart-summary-subtotal>{{ number_format($item['precio'] * $item['cantidad'], 2) }} €</strong>
                 </div>
             @endforeach
 
             <div class="cart-summary-total">
                 <span>Total</span>
-                <strong>{{ number_format($total, 2) }} €</strong>
+                <strong data-cart-total>{{ number_format($total, 2) }} €</strong>
             </div>
 
             <div class="cart-summary-actions">

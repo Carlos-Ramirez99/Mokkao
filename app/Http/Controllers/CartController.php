@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -44,10 +45,12 @@ class CartController extends Controller
 
         session(['cart' => $cart]);
 
-        return redirect()->route('cart.index')->with('success', 'Producto añadido al carrito.');
+        return back()
+            ->with('success', 'Producto añadido al carrito.')
+            ->with('cart_preview', true);
     }
 
-    public function update(Request $request, int $idProducto): RedirectResponse
+    public function update(Request $request, int $idProducto): RedirectResponse|JsonResponse
     {
         $validated = $request->validate([
             'cantidad' => ['required', 'integer', 'min:1', 'max:20'],
@@ -61,15 +64,61 @@ class CartController extends Controller
         $cart[$idProducto]['notas'] = $validated['notas'] ?? null;
         session(['cart' => $cart]);
 
-        return back()->with('success', 'Carrito actualizado.');
+        if ($request->expectsJson()) {
+            $items = collect($cart);
+            $item = $cart[$idProducto];
+            $subtotal = $item['precio'] * $item['cantidad'];
+            $total = $items->sum(fn ($cartItem) => $cartItem['precio'] * $cartItem['cantidad']);
+
+            return response()->json([
+                'message' => 'Carrito actualizado.',
+                'cart_count' => $items->sum('cantidad'),
+                'item' => [
+                    'id' => $item['id_producto'],
+                    'quantity' => $item['cantidad'],
+                    'subtotal' => $subtotal,
+                    'subtotal_formatted' => number_format($subtotal, 2) . ' €',
+                ],
+                'total' => $total,
+                'total_formatted' => number_format($total, 2) . ' €',
+            ]);
+        }
+
+        $response = back()->with('success', 'Carrito actualizado.');
+
+        if ($request->boolean('cart_preview')) {
+            $response->with('cart_preview', true);
+        }
+
+        return $response;
     }
 
-    public function destroy(int $idProducto): RedirectResponse
+    public function destroy(Request $request, int $idProducto): RedirectResponse|JsonResponse
     {
         $cart = session('cart', []);
         unset($cart[$idProducto]);
         session(['cart' => $cart]);
 
-        return back()->with('success', 'Producto eliminado del carrito.');
+        if ($request->expectsJson()) {
+            $items = collect($cart);
+            $total = $items->sum(fn ($item) => $item['precio'] * $item['cantidad']);
+
+            return response()->json([
+                'message' => 'Producto eliminado del carrito.',
+                'cart_count' => $items->sum('cantidad'),
+                'removed_item_id' => $idProducto,
+                'is_empty' => $items->isEmpty(),
+                'total' => $total,
+                'total_formatted' => number_format($total, 2) . ' €',
+            ]);
+        }
+
+        $response = back()->with('success', 'Producto eliminado del carrito.');
+
+        if ($request->boolean('cart_preview')) {
+            $response->with('cart_preview', true);
+        }
+
+        return $response;
     }
 }
