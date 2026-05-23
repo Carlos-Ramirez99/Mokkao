@@ -87,6 +87,45 @@ class PaymentTest extends TestCase
             ->assertSee('3.50');
     }
 
+    public function test_admin_can_filter_sales_by_payment_method(): void
+    {
+        [$user, $producto, $sucursal] = $this->seedCheckoutData();
+        $admin = User::create([
+            'nombre' => 'Admin',
+            'email' => 'admin-filter@example.test',
+            'contrasena' => 'password123',
+            'rol' => 'administrador',
+        ]);
+
+        $pedido = $user->pedidos()->create([
+            'id_sucursal' => $sucursal->id_sucursal,
+            'fecha' => now()->addDay()->toDateString(),
+            'hora_recogida' => '18:30',
+            'estado' => 'pendiente',
+            'total' => 3.50,
+        ]);
+
+        $pedido->detalles()->create([
+            'id_producto' => $producto->id_producto,
+            'cantidad' => 1,
+            'precio_unitario' => 3.50,
+        ]);
+
+        Pago::create([
+            'id_pedido' => $pedido->id_pedido,
+            'metodo_pago' => 'bizum',
+            'monto' => 3.50,
+            'estado' => 'pagado',
+            'fecha_pago' => now(),
+        ]);
+
+        $this
+            ->actingAs($admin)
+            ->get(route('admin.sales.index', ['metodo_pago' => 'tarjeta']))
+            ->assertOk()
+            ->assertSee('No hay ventas para los filtros seleccionados.');
+    }
+
     private function seedCheckoutData(): array
     {
         $user = User::create([
