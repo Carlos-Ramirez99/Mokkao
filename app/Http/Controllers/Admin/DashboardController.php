@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pago;
 use App\Models\Pedido;
 use App\Models\Producto;
 use Carbon\Carbon;
@@ -16,7 +17,7 @@ class DashboardController extends Controller
             'productosActivos' => Producto::where('disponible', true)->count(),
             'pedidosPendientes' => Pedido::whereIn('estado', ['pendiente', 'en_preparacion'])->count(),
             'pedidosListos' => Pedido::where('estado', 'listo')->count(),
-            'ventasRegistradas' => Pedido::whereNot('estado', 'cancelado')->sum('total'),
+            'ventasRegistradas' => Pago::where('estado', 'pagado')->sum('monto'),
             'pedidosRecientes' => Pedido::with(['usuario', 'detalles.producto'])->latest('id_pedido')->take(5)->get(),
             'clientes' => Pedido::distinct('id_usuario')->count('id_usuario'),
             'hoy' => Carbon::now()->locale('es')->translatedFormat('j M'),

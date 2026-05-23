@@ -8,6 +8,9 @@
     <p><strong>Estado:</strong> {{ str_replace('_', ' ', $pedido->estado) }}</p>
     <p><strong>Recogida:</strong> {{ $pedido->fecha->format('d/m/Y') }} a las {{ substr($pedido->hora_recogida, 0, 5) }}</p>
     <p><strong>Sucursal:</strong> {{ $pedido->sucursal->nombre }} — {{ $pedido->sucursal->direccion }}</p>
+    @if ($pedido->pago)
+        <p><strong>Pago:</strong> {{ ucfirst($pedido->pago->metodo_pago) }} · {{ ucfirst($pedido->pago->estado) }}</p>
+    @endif
     <h2>Productos</h2>
     <ul>
         @foreach ($pedido->detalles as $detalle)

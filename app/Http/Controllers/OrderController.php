@@ -47,6 +47,7 @@ class OrderController extends Controller
             'id_sucursal' => ['required', 'exists:sucursales,id_sucursal'],
             'fecha' => ['required', 'date', 'after_or_equal:today'],
             'hora_recogida' => ['required', 'date_format:H:i'],
+            'metodo_pago' => ['required', 'in:tarjeta,efectivo,paypal,bizum'],
         ]);
 
         $pickupAt = Carbon::createFromFormat('Y-m-d H:i', $validated['fecha'].' '.$validated['hora_recogida']);
@@ -84,6 +85,15 @@ class OrderController extends Controller
                 ]);
             }
 
+            $estadoPago = $validated['metodo_pago'] === 'efectivo' ? 'pendiente' : 'pagado';
+
+            $pedido->pago()->create([
+                'metodo_pago' => $validated['metodo_pago'],
+                'monto' => $total,
+                'estado' => $estadoPago,
+                'fecha_pago' => $estadoPago === 'pagado' ? now() : null,
+            ]);
+
             return $pedido;
         });
 
@@ -96,7 +106,7 @@ class OrderController extends Controller
     {
         abort_unless($pedido->id_usuario === auth()->id(), 403);
 
-        $pedido->load(['sucursal', 'detalles.producto']);
+        $pedido->load(['sucursal', 'detalles.producto', 'pago']);
 
         return view('orders.show', compact('pedido'));
     }

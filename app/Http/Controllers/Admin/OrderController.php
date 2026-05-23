@@ -24,7 +24,7 @@ class OrderController extends Controller
 
     public function show(Pedido $pedido): View
     {
-        $pedido->load(['usuario', 'sucursal', 'detalles.producto']);
+        $pedido->load(['usuario', 'sucursal', 'detalles.producto', 'pago']);
 
         return view('admin.orders.show', compact('pedido'));
     }

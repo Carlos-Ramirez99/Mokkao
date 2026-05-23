@@ -19,6 +19,15 @@
         <label>Hora de recogida
             <input type="time" name="hora_recogida" value="{{ old('hora_recogida', now()->addMinutes(30)->format('H:i')) }}" required>
         </label>
+        <label>Método de pago
+            <select name="metodo_pago" required>
+                <option value="tarjeta" @selected(old('metodo_pago') === 'tarjeta')>Tarjeta</option>
+                <option value="bizum" @selected(old('metodo_pago') === 'bizum')>Bizum</option>
+                <option value="paypal" @selected(old('metodo_pago') === 'paypal')>PayPal</option>
+                <option value="efectivo" @selected(old('metodo_pago') === 'efectivo')>Efectivo en tienda</option>
+            </select>
+        </label>
+        <p class="payment-note">No almacenamos datos de tarjeta. En este sprint el pago online queda simulado de forma segura.</p>
         <button type="submit">Confirmar pedido</button>
     </form>
 </section>
