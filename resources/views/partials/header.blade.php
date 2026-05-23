@@ -4,7 +4,7 @@
     </a>
     <div class="nav-pill">
         <a href="{{ route('menu.index') }}">Shop</a>
-        <a href="{{ route('home') }}#about">About</a>
+        <a href="{{ route('about') }}">About</a>
         <a href="{{ route('menu.index') }}">Carta</a>
     </div>
     <a class="contact-pill" href="#contacto">Contacto</a>
