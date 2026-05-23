@@ -19,12 +19,14 @@ Aplicación web Take Away para pedir café y recogerlo en sucursal.
 - Gestión completa de productos: crear, editar, ocultar y eliminar.
 - Gestión de pedidos: listado, filtrado, detalle y actualización de estado.
 
-## Sprint 3 iniciado
+## Sprint 3 incluido
 
 - Registro de pagos por pedido sin almacenar datos sensibles de tarjeta.
 - Métodos de pago: tarjeta, Bizum, PayPal y efectivo.
 - Reporte administrativo de ventas y pagos.
-- Pruebas de flujo de pago y reporte de ventas.
+- Filtros de ventas por fecha, estado y método de pago.
+- Resumen visual del checkout antes de confirmar el pedido.
+- Pruebas de flujo de pago, reporte de ventas y permisos.
 
 ## Stack
 

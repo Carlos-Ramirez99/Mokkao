@@ -30,9 +30,11 @@ class OrderController extends Controller
             return redirect()->route('cart.index')->withErrors(['cart' => 'Añade al menos un producto antes de confirmar.']);
         }
 
+        $items = collect(session('cart', []));
+        $total = $items->sum(fn ($item) => $item['precio'] * $item['cantidad']);
         $sucursales = Sucursal::all();
 
-        return view('orders.create', compact('sucursales'));
+        return view('orders.create', compact('sucursales', 'items', 'total'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -99,7 +101,7 @@ class OrderController extends Controller
 
         session()->forget('cart');
 
-        return redirect()->route('orders.show', $pedido)->with('success', 'Pedido confirmado.');
+        return redirect()->route('orders.show', $pedido)->with('success', 'Pedido confirmado. Hemos registrado el pago de forma segura.');
     }
 
     public function show(Pedido $pedido): View
