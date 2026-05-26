@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cupon;
 use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\Sucursal;
@@ -15,11 +16,7 @@ class OrderController extends Controller
 {
     public function index(): View
     {
-        $pedidos = auth()->user()
-            ->pedidos()
-            ->with('sucursal')
-            ->latest('id_pedido')
-            ->get();
+        $pedidos = auth()->user()->pedidos()->with('sucursal')->latest('id_pedido')->get();
 
         return view('orders.index', compact('pedidos'));
     }
@@ -27,14 +24,16 @@ class OrderController extends Controller
     public function create(): View|RedirectResponse
     {
         if (empty(session('cart', []))) {
-            return redirect()->route('cart.index')->withErrors(['cart' => 'Añade al menos un producto antes de confirmar.']);
+            return redirect()->route('cart.index')->withErrors(['cart' => 'Anade al menos un producto antes de confirmar.']);
         }
 
         $items = collect(session('cart', []));
-        $total = $items->sum(fn ($item) => $item['precio'] * $item['cantidad']);
+        $subtotal = (float) $items->sum(fn ($item) => $item['precio'] * $item['cantidad']);
+        [$discountCode, $discount] = $this->activeDiscount($subtotal);
+        $total = max(0, $subtotal - $discount);
         $sucursales = Sucursal::all();
 
-        return view('orders.create', compact('sucursales', 'items', 'total'));
+        return view('orders.create', compact('sucursales', 'items', 'subtotal', 'discount', 'discountCode', 'total'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -42,7 +41,7 @@ class OrderController extends Controller
         $cart = collect(session('cart', []));
 
         if ($cart->isEmpty()) {
-            return redirect()->route('cart.index')->withErrors(['cart' => 'El carrito está vacío.']);
+            return redirect()->route('cart.index')->withErrors(['cart' => 'El carrito esta vacio.']);
         }
 
         $validated = $request->validate([
@@ -57,17 +56,16 @@ class OrderController extends Controller
             return back()->withErrors(['hora_recogida' => 'La hora de recogida debe ser futura.'])->withInput();
         }
 
-        $productos = Producto::whereIn('id_producto', $cart->pluck('id_producto'))
-            ->where('disponible', true)
-            ->get()
-            ->keyBy('id_producto');
+        $productos = Producto::whereIn('id_producto', $cart->pluck('id_producto'))->where('disponible', true)->get()->keyBy('id_producto');
 
         if ($productos->count() !== $cart->count()) {
-            return redirect()->route('cart.index')->withErrors(['cart' => 'Algún producto ya no está disponible.']);
+            return redirect()->route('cart.index')->withErrors(['cart' => 'Algun producto ya no esta disponible.']);
         }
 
         $pedido = DB::transaction(function () use ($validated, $cart, $productos) {
-            $total = $cart->sum(fn ($item) => $productos[$item['id_producto']]->precio * $item['cantidad']);
+            $subtotal = (float) $cart->sum(fn ($item) => $productos[$item['id_producto']]->precio * $item['cantidad']);
+            [$discountCode, $discount] = $this->activeDiscount($subtotal);
+            $total = max(0, $subtotal - $discount);
 
             $pedido = Pedido::create([
                 'id_usuario' => auth()->id(),
@@ -75,6 +73,8 @@ class OrderController extends Controller
                 'fecha' => $validated['fecha'],
                 'hora_recogida' => $validated['hora_recogida'],
                 'estado' => 'pendiente',
+                'codigo_descuento' => $discount > 0 ? $discountCode : null,
+                'descuento' => $discount,
                 'total' => $total,
             ]);
 
@@ -83,7 +83,7 @@ class OrderController extends Controller
                     'id_producto' => $item['id_producto'],
                     'cantidad' => $item['cantidad'],
                     'precio_unitario' => $productos[$item['id_producto']]->precio,
-                    'notas' => $item['notas'],
+                    'notas' => $this->notasConTamano($item),
                 ]);
             }
 
@@ -99,7 +99,7 @@ class OrderController extends Controller
             return $pedido;
         });
 
-        session()->forget('cart');
+        session()->forget(['cart', 'discount']);
 
         return redirect()->route('orders.show', $pedido)->with('success', 'Pedido confirmado. Hemos registrado el pago de forma segura.');
     }
@@ -111,5 +111,52 @@ class OrderController extends Controller
         $pedido->load(['sucursal', 'detalles.producto', 'pago']);
 
         return view('orders.show', compact('pedido'));
+    }
+
+    private function activeDiscount(float $subtotal): array
+    {
+        $code = session('discount.code');
+
+        if (! $code) {
+            return [null, 0];
+        }
+
+        $cupon = Cupon::where('codigo', $code)->where('activo', true)->first();
+
+        if (! $cupon || $this->discountAlreadyUsed($cupon->codigo)) {
+            session()->forget('discount');
+            return [null, 0];
+        }
+
+        $discount = $cupon->tipo === 'porcentaje'
+            ? $subtotal * ((float) $cupon->valor / 100)
+            : (float) $cupon->valor;
+
+        return [$cupon->codigo, round(min($discount, $subtotal), 2)];
+    }
+
+    private function discountAlreadyUsed(string $code): bool
+    {
+        return auth()->user()->rol !== 'administrador'
+            && auth()->user()->pedidos()->where('codigo_descuento', $code)->exists();
+    }
+
+    private function notasConTamano(array $item): ?string
+    {
+        $notas = trim((string) ($item['notas'] ?? ''));
+
+        if (! ($item['es_bebida'] ?? false)) {
+            return $notas !== '' ? $notas : null;
+        }
+
+        $labels = ['pequeno' => 'Pequeno', 'mediano' => 'Mediano', 'grande' => 'Grande'];
+        $tamano = $labels[$item['tamano'] ?? 'mediano'] ?? 'Mediano';
+        $partes = ["Tamano: {$tamano}"];
+
+        if ($notas !== '') {
+            $partes[] = $notas;
+        }
+
+        return implode(' - ', $partes);
     }
 }

@@ -3,14 +3,14 @@
 @section('content')
 <section class="checkout-shell">
     <div class="checkout-card">
-        <p class="eyebrow">Último paso</p>
+        <p class="eyebrow">Ultimo paso</p>
         <h1>Confirmar pedido</h1>
         <form method="POST" action="{{ route('orders.store') }}">
             @csrf
             <label>Sucursal
                 <select name="id_sucursal" required>
                     @foreach ($sucursales as $sucursal)
-                        <option value="{{ $sucursal->id_sucursal }}">{{ $sucursal->nombre }} — {{ $sucursal->direccion }}</option>
+                        <option value="{{ $sucursal->id_sucursal }}">{{ $sucursal->nombre }} - {{ $sucursal->direccion }}</option>
                     @endforeach
                 </select>
             </label>
@@ -20,7 +20,7 @@
             <label>Hora de recogida
                 <input type="time" name="hora_recogida" value="{{ old('hora_recogida', now()->addMinutes(30)->format('H:i')) }}" required>
             </label>
-            <label>Método de pago
+            <label>Metodo de pago
                 <select name="metodo_pago" required>
                     <option value="tarjeta" @selected(old('metodo_pago') === 'tarjeta')>Tarjeta</option>
                     <option value="bizum" @selected(old('metodo_pago') === 'bizum')>Bizum</option>
@@ -37,13 +37,25 @@
         <p class="eyebrow">Resumen</p>
         <h2>Tu pedido</h2>
         <div class="checkout-items">
+            @php($tamanoLabels = ['pequeno' => 'Pequeno', 'mediano' => 'Mediano', 'grande' => 'Grande'])
             @foreach ($items as $item)
                 <div>
-                    <span>{{ $item['cantidad'] }} × {{ $item['nombre'] }}</span>
+                    <span>
+                        {{ $item['cantidad'] }} x {{ $item['nombre'] }}
+                        @if ($item['es_bebida'] ?? false)
+                            - {{ $tamanoLabels[$item['tamano'] ?? 'mediano'] ?? 'Mediano' }}
+                        @endif
+                    </span>
                     <strong>{{ number_format($item['precio'] * $item['cantidad'], 2) }} €</strong>
                 </div>
             @endforeach
         </div>
+        @if ($discount > 0)
+            <div class="checkout-total checkout-discount">
+                <span>Descuento {{ $discountCode }}</span>
+                <strong>-{{ number_format($discount, 2) }} €</strong>
+            </div>
+        @endif
         <div class="checkout-total">
             <span>Total</span>
             <strong>{{ number_format($total, 2) }} €</strong>

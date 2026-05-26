@@ -30,11 +30,12 @@ Aplicación web Take Away para pedir café y recogerlo en sucursal.
 - Resumen visual del checkout antes de confirmar el pedido.
 - Pruebas de flujo de pago, reporte de ventas y permisos.
 
-### Sprint 4 iniciado
+### Sprint 4 incluido
 
 - Documentación final de instalación y despliegue.
 - Checklist de mantenimiento inicial.
 - Verificación de migraciones, seeders y pruebas desde cero.
+- Configuración base preparada para XAMPP, Apache y MySQL.
 
 ## Stack
 
@@ -107,11 +108,28 @@ php artisan config:clear
 php artisan route:list
 ```
 
+## Verificación final de entrega
+
+Antes de entregar o desplegar:
+
+```bash
+php artisan config:clear
+php artisan migrate:fresh --seed
+php artisan test
+```
+
+Resultado esperado actual:
+
+- Migraciones correctas.
+- Seeders correctos.
+- Tests pasando.
+
 ## Notas de seguridad
 
 - No se almacenan datos sensibles de tarjeta.
 - Los pagos online están simulados en Sprint 3.
 - El panel de administración está protegido por autenticación y rol `administrador`.
 - En producción se debe usar `APP_DEBUG=false`.
+- En producción se debe cambiar la contraseña del administrador inicial.
 
 Las guías locales de despliegue y mantenimiento pueden mantenerse fuera del repositorio si contienen notas específicas del entorno.

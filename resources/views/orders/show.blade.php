@@ -8,12 +8,12 @@
     <section class="order-detail">
         <p><strong>Estado:</strong> {{ str_replace('_', ' ', $pedido->estado) }}</p>
         <p><strong>Recogida:</strong> {{ $pedido->fecha->format('d/m/Y') }} a las {{ substr($pedido->hora_recogida, 0, 5) }}</p>
-        <p><strong>Sucursal:</strong> {{ $pedido->sucursal->nombre }} — {{ $pedido->sucursal->direccion }}</p>
+        <p><strong>Sucursal:</strong> {{ $pedido->sucursal->nombre }} - {{ $pedido->sucursal->direccion }}</p>
         @if ($pedido->pago)
             <p>
                 <strong>Pago:</strong>
                 <span class="payment-status {{ $pedido->pago->estado === 'pagado' ? 'is-paid' : 'is-pending' }}">
-                    {{ ucfirst($pedido->pago->metodo_pago) }} · {{ ucfirst($pedido->pago->estado) }}
+                    {{ ucfirst($pedido->pago->metodo_pago) }} - {{ ucfirst($pedido->pago->estado) }}
                 </span>
             </p>
         @endif
@@ -21,14 +21,17 @@
         <ul>
             @foreach ($pedido->detalles as $detalle)
                 <li>
-                    {{ $detalle->cantidad }} × {{ $detalle->producto->nombre }}
-                    — {{ number_format($detalle->precio_unitario, 2) }} €
+                    {{ $detalle->cantidad }} x {{ $detalle->producto->nombre }}
+                    - {{ number_format($detalle->precio_unitario, 2) }} €
                     @if ($detalle->notas)
                         <small>({{ $detalle->notas }})</small>
                     @endif
                 </li>
             @endforeach
         </ul>
+        @if ($pedido->descuento > 0)
+            <p><strong>Descuento {{ $pedido->codigo_descuento }}:</strong> -{{ number_format($pedido->descuento, 2) }} €</p>
+        @endif
         <strong>Total: {{ number_format($pedido->total, 2) }} €</strong>
     </section>
 </section>

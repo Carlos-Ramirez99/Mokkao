@@ -135,13 +135,23 @@ main { min-height: 55vh; }
   min-width: 100%;
   animation: shipping-carousel 18s linear infinite;
 }
-.shipping-track span {
+.shipping-track > span {
   display: inline-flex;
   min-width: 100vw;
   min-height: 40px;
   align-items: center;
   justify-content: center;
-  padding: 0 24px;
+  gap: clamp(48px, 8vw, 130px);
+  padding: 0 32px;
+}
+.shipping-greeting,
+.shipping-code {
+  display: inline-flex;
+  align-items: center;
+}
+.shipping-code {
+  font-weight: 700;
+  letter-spacing: .04em;
 }
 @keyframes shipping-carousel {
   from { transform: translateX(0); }
@@ -436,6 +446,34 @@ footer nav a:hover::after {
   transform: translate(-50%, -50%) scale(1.06);
 }
 .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.menu-category {
+  margin-top: 70px;
+}
+.menu-category:first-of-type {
+  margin-top: 34px;
+}
+.menu-category-heading {
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(132, 9, 0, .22);
+}
+.menu-category-heading span {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--wine);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.menu-category-heading p {
+  max-width: 360px;
+  margin: 0;
+  color: #5a403a;
+  font-size: 18px;
+  line-height: 1.35;
+}
 .shop-card {
   position: relative;
   display: flex;
@@ -1111,6 +1149,20 @@ th, td { padding: 16px; border-bottom: 1px solid #eee; text-align: left; }
   border-radius: 0;
   background: transparent;
 }
+.cart-size-label {
+  color: var(--wine);
+  font-size: 14px;
+  font-weight: 700;
+}
+.cart-size-select {
+  width: min(240px, 100%);
+  padding: 12px 14px;
+  border: 1px solid rgba(132, 9, 0, .22);
+  border-radius: 18px;
+  background: #fff;
+  color: #1f1512;
+  font: inherit;
+}
 .cart-update-button {
   justify-self: start;
   border: 0;
@@ -1158,6 +1210,34 @@ th, td { padding: 16px; border-bottom: 1px solid #eee; text-align: left; }
   background: var(--wine);
   color: #fff;
 }
+.cart-discount-login {
+  display: inline-flex;
+  min-width: 203px;
+  min-height: 58px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--wine);
+  color: #fff;
+  font-size: 22px;
+}
+.cart-discount-applied {
+  display: flex;
+  max-width: 990px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 24px;
+  border: 1px solid rgba(132, 9, 0, .18);
+  border-radius: 24px;
+  background: var(--cream);
+}
+.cart-discount-applied form { margin: 0; }
+.cart-discount-applied button {
+  border: 0;
+  color: var(--wine);
+  font-weight: 700;
+}
 .cart-discount-row :disabled {
   opacity: .65;
 }
@@ -1176,6 +1256,9 @@ th, td { padding: 16px; border-bottom: 1px solid #eee; text-align: left; }
 .cart-summary-row {
   padding: 18px 0;
   font-size: 28px;
+}
+.cart-summary-discount {
+  color: var(--wine);
 }
 .cart-summary-total {
   margin-top: 42px;

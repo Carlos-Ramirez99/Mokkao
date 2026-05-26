@@ -12,6 +12,8 @@
             <a class="button" href="{{ route('menu.index') }}">Ver la carta</a>
         </div>
     @else
+        @php($tamanoLabels = ['pequeno' => 'Pequeño', 'mediano' => 'Mediano', 'grande' => 'Grande'])
+
         <section class="cart-product-list">
             @foreach ($items as $item)
                 <article class="cart-product" data-cart-item="{{ $item['id_producto'] }}">
@@ -29,6 +31,9 @@
                     <div class="cart-product-copy">
                         <h2>{{ $item['nombre'] }}</h2>
                         <p>{{ number_format($item['precio'], 2) }} € por unidad</p>
+                        @if ($item['es_bebida'] ?? false)
+                            <span>Tamaño: {{ $tamanoLabels[$item['tamano'] ?? 'mediano'] ?? 'Mediano' }}</span>
+                        @endif
                         <span>{{ $item['notas'] ?: 'Sin personalizaciones añadidas' }}</span>
                     </div>
 
@@ -38,11 +43,7 @@
                             @method('PATCH')
                             <label class="sr-only" for="cantidad-{{ $item['id_producto'] }}">Cantidad</label>
                             <div class="cart-quantity">
-                                <button
-                                    type="button"
-                                    aria-label="Restar una unidad"
-                                    data-cart-step="-1"
-                                >−</button>
+                                <button type="button" aria-label="Restar una unidad" data-cart-step="-1">−</button>
                                 <input
                                     id="cantidad-{{ $item['id_producto'] }}"
                                     type="number"
@@ -52,12 +53,18 @@
                                     value="{{ $item['cantidad'] }}"
                                     data-cart-quantity-input
                                 >
-                                <button
-                                    type="button"
-                                    aria-label="Sumar una unidad"
-                                    data-cart-step="1"
-                                >+</button>
+                                <button type="button" aria-label="Sumar una unidad" data-cart-step="1">+</button>
                             </div>
+
+                            @if ($item['es_bebida'] ?? false)
+                                <label class="cart-size-label" for="tamano-{{ $item['id_producto'] }}">Tamaño</label>
+                                <select id="tamano-{{ $item['id_producto'] }}" class="cart-size-select" name="tamano">
+                                    <option value="pequeno" @selected(($item['tamano'] ?? 'mediano') === 'pequeno')>Pequeño</option>
+                                    <option value="mediano" @selected(($item['tamano'] ?? 'mediano') === 'mediano')>Mediano</option>
+                                    <option value="grande" @selected(($item['tamano'] ?? 'mediano') === 'grande')>Grande</option>
+                                </select>
+                            @endif
+
                             <label class="sr-only" for="notas-{{ $item['id_producto'] }}">Notas</label>
                             <input
                                 id="notas-{{ $item['id_producto'] }}"
@@ -66,7 +73,7 @@
                                 value="{{ $item['notas'] }}"
                                 placeholder="Notas o personalización"
                             >
-                            <button class="cart-update-button" type="submit">Guardar notas</button>
+                            <button class="cart-update-button" type="submit">Guardar cambios</button>
                         </form>
 
                         <strong data-cart-item-subtotal>{{ number_format($item['precio'] * $item['cantidad'], 2) }} €</strong>
@@ -76,11 +83,30 @@
         </section>
 
         <section class="cart-discount">
-            <p>¿Tienes un código de descuento? Escríbelo aquí.</p>
-            <div class="cart-discount-row">
-                <input type="text" placeholder="Escribe tu código" disabled>
-                <button type="button" disabled>Aplicar</button>
-            </div>
+            <p>¿Tienes un código de descuento? Usa <strong>MOKKAO10</strong> por la inauguración de la web.</p>
+            @auth
+                @if ($discountCode)
+                    <div class="cart-discount-applied">
+                        <span>Código aplicado: <strong>{{ $discountCode }}</strong></span>
+                        <form method="POST" action="{{ route('cart.discount.remove') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Quitar</button>
+                        </form>
+                    </div>
+                @else
+                    <form class="cart-discount-row" method="POST" action="{{ route('cart.discount.apply') }}">
+                        @csrf
+                        <input type="text" name="codigo_descuento" placeholder="Escribe tu código" value="{{ old('codigo_descuento') }}">
+                        <button type="submit">Aplicar</button>
+                    </form>
+                @endif
+            @else
+                <div class="cart-discount-row">
+                    <input type="text" placeholder="Inicia sesión para usar MOKKAO10" disabled>
+                    <a class="cart-discount-login" href="{{ route('login') }}">Iniciar sesión</a>
+                </div>
+            @endauth
         </section>
 
         <section class="cart-summary">
@@ -88,10 +114,22 @@
 
             @foreach ($items as $item)
                 <div class="cart-summary-row" data-cart-summary-item="{{ $item['id_producto'] }}">
-                    <span data-cart-summary-label>{{ $item['nombre'] }} × {{ $item['cantidad'] }}</span>
+                    <span data-cart-summary-label>
+                        {{ $item['nombre'] }} × {{ $item['cantidad'] }}
+                        @if ($item['es_bebida'] ?? false)
+                            · {{ $tamanoLabels[$item['tamano'] ?? 'mediano'] ?? 'Mediano' }}
+                        @endif
+                    </span>
                     <strong data-cart-summary-subtotal>{{ number_format($item['precio'] * $item['cantidad'], 2) }} €</strong>
                 </div>
             @endforeach
+
+            @if ($discount > 0)
+                <div class="cart-summary-row cart-summary-discount">
+                    <span>Descuento {{ $discountCode }}</span>
+                    <strong data-cart-discount>-{{ number_format($discount, 2) }} €</strong>
+                </div>
+            @endif
 
             <div class="cart-summary-total">
                 <span>Total</span>

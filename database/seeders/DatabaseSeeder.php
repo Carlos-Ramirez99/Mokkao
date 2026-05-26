@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Categoria;
+use App\Models\Cupon;
 use App\Models\Producto;
 use App\Models\Sucursal;
 use App\Models\User;
@@ -33,19 +34,19 @@ class DatabaseSeeder extends Seeder
             ['direccion' => 'Calle Mayor 10, Madrid', 'telefono' => '910123456']
         );
 
-        $cafes = Categoria::firstOrCreate(
-            ['nombre' => 'Cafés'],
-            ['descripcion' => 'Clásicos preparados al momento.']
+        $cafes = Categoria::updateOrCreate(
+            ['nombre' => 'Bebida caliente'],
+            ['descripcion' => 'Cafes y bebidas calientes preparadas al momento.']
         );
 
-        $frias = Categoria::firstOrCreate(
-            ['nombre' => 'Bebidas frías'],
+        $frias = Categoria::updateOrCreate(
+            ['nombre' => 'Bebida fria'],
             ['descripcion' => 'Opciones refrescantes para llevar.']
         );
 
-        $bolleria = Categoria::firstOrCreate(
-            ['nombre' => 'Bollería'],
-            ['descripcion' => 'Acompañamientos dulces.']
+        $bolleria = Categoria::updateOrCreate(
+            ['nombre' => 'Reposteria'],
+            ['descripcion' => 'Acompanamientos dulces.']
         );
 
         Producto::updateOrCreate(
@@ -66,6 +67,50 @@ class DatabaseSeeder extends Seeder
         Producto::updateOrCreate(
             ['nombre' => 'Croissant'],
             ['id_categoria' => $bolleria->id_categoria, 'descripcion' => 'Croissant de mantequilla recién horneado.', 'alergenos' => 'Gluten, leche', 'precio' => 2.20, 'disponible' => true]
+        );
+        Producto::updateOrCreate(
+            ['nombre' => 'Cappuccino'],
+            ['id_categoria' => $cafes->id_categoria, 'descripcion' => 'Espresso con espuma de leche cremosa y cacao.', 'alergenos' => 'Leche', 'precio' => 3.10, 'disponible' => true]
+        );
+
+        Producto::updateOrCreate(
+            ['nombre' => 'Americano'],
+            ['id_categoria' => $cafes->id_categoria, 'descripcion' => 'Cafe suave y largo preparado con espresso y agua caliente.', 'alergenos' => null, 'precio' => 2.30, 'disponible' => true]
+        );
+
+        Producto::updateOrCreate(
+            ['nombre' => 'Mokkao Especial'],
+            ['id_categoria' => $cafes->id_categoria, 'descripcion' => 'Cafe con chocolate, leche vaporizada y un toque de vainilla.', 'alergenos' => 'Leche', 'precio' => 3.80, 'disponible' => true]
+        );
+
+        Producto::updateOrCreate(
+            ['nombre' => 'Te Matcha'],
+            ['id_categoria' => $frias->id_categoria, 'descripcion' => 'Matcha suave con leche, servido frio o caliente.', 'alergenos' => 'Leche', 'precio' => 3.50, 'disponible' => true]
+        );
+
+        Producto::updateOrCreate(
+            ['nombre' => 'Iced Latte'],
+            ['id_categoria' => $frias->id_categoria, 'descripcion' => 'Espresso con leche fria y hielo, perfecto para llevar.', 'alergenos' => 'Leche', 'precio' => 3.30, 'disponible' => true]
+        );
+
+        Producto::updateOrCreate(
+            ['nombre' => 'Frappe de Caramelo'],
+            ['id_categoria' => $frias->id_categoria, 'descripcion' => 'Bebida fria batida con cafe, leche y caramelo.', 'alergenos' => 'Leche', 'precio' => 4.20, 'disponible' => true]
+        );
+
+        Producto::updateOrCreate(
+            ['nombre' => 'Muffin de Chocolate'],
+            ['id_categoria' => $bolleria->id_categoria, 'descripcion' => 'Muffin esponjoso con pepitas de chocolate.', 'alergenos' => 'Gluten, huevo, leche', 'precio' => 2.60, 'disponible' => true]
+        );
+
+        Producto::updateOrCreate(
+            ['nombre' => 'Cookie de Avena'],
+            ['id_categoria' => $bolleria->id_categoria, 'descripcion' => 'Galleta de avena con textura crujiente y toque de canela.', 'alergenos' => 'Gluten', 'precio' => 1.90, 'disponible' => true]
+        );
+
+        Cupon::updateOrCreate(
+            ['codigo' => 'MOKKAO10'],
+            ['tipo' => 'porcentaje', 'valor' => 10, 'activo' => true]
         );
     }
 }

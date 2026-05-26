@@ -3,9 +3,8 @@
         <img src="{{ asset('appearance/shared/img/148048b4f6a61eeffeacd39f0a157776450cf6c7.png') }}" alt="Mokkao">
     </a>
     <div class="nav-pill">
-        <a href="{{ route('menu.index') }}">Shop</a>
-        <a href="{{ route('about') }}">About</a>
         <a href="{{ route('menu.index') }}">Carta</a>
+        <a href="{{ route('about') }}">About</a>
     </div>
     <a class="contact-pill" href="#contacto">Contacto</a>
     @auth

@@ -8,8 +8,8 @@ class Pedido extends Model
 {
     protected $table = 'pedidos';
     protected $primaryKey = 'id_pedido';
-    protected $fillable = ['id_usuario', 'id_sucursal', 'fecha', 'hora_recogida', 'estado', 'total'];
-    protected $casts = ['fecha' => 'date', 'total' => 'decimal:2'];
+    protected $fillable = ['id_usuario', 'id_sucursal', 'fecha', 'hora_recogida', 'estado', 'codigo_descuento', 'descuento', 'total'];
+    protected $casts = ['fecha' => 'date', 'descuento' => 'decimal:2', 'total' => 'decimal:2'];
 
     public function usuario()
     {

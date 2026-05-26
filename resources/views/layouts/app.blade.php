@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'Mokkao' }}</title>
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=20260523" type="image/x-icon">
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=20260523" sizes="any">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=20260523">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,10 +16,23 @@
 <body class="@yield('body_class', 'default-page') {{ session('cart_preview') ? 'cart-preview-open' : '' }}">
     @include('partials.header')
     @include('partials.cart-preview')
-    <div class="shipping" aria-label="Envíos nacionales gratis en pedidos superiores a 39€ (Península)">
+    @php
+        $promoMessage = auth()->check()
+            ? 'Hola, '.auth()->user()->nombre.'. Tu cafe te esta esperando.'
+            : 'Crea tu cuenta en Mokkao y pide tu cafe para recoger sin esperas.';
+        $discountMessage = 'Inauguracion web: usa el codigo MOKKAO10 y disfruta un 10% de descuento.';
+        $bannerMessage = $promoMessage.' - '.$discountMessage;
+    @endphp
+    <div class="shipping" aria-label="{{ $bannerMessage }}">
         <div class="shipping-track" aria-hidden="true">
-            <span>Envíos nacionales gratis en pedidos superiores a 39€ (Península)</span>
-            <span>Envíos nacionales gratis en pedidos superiores a 39€ (Península)</span>
+            <span>
+                <span class="shipping-greeting">{{ $promoMessage }}</span>
+                <span class="shipping-code">{{ $discountMessage }}</span>
+            </span>
+            <span>
+                <span class="shipping-greeting">{{ $promoMessage }}</span>
+                <span class="shipping-code">{{ $discountMessage }}</span>
+            </span>
         </div>
     </div>
     <main>

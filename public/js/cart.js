@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateCartTotals = (data) => {
     updateText('[data-cart-count]', data.cart_count);
     updateText('[data-cart-count-label]', `${data.cart_count} ${data.cart_count === 1 ? 'producto' : 'productos'}`);
+    if (data.discount_formatted) {
+      updateText('[data-cart-discount]', data.discount_formatted);
+    }
     updateText('[data-cart-total]', data.total_formatted);
   };
 
@@ -30,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const subtotal = row.querySelector('[data-cart-summary-subtotal]');
 
       if (label) {
-        label.textContent = label.textContent.replace(/\u00d7\s*\d+$/, `\u00d7 ${data.item.quantity}`);
+        label.textContent = data.item.summary_label || label.textContent.replace(/\u00d7\s*\d+$/, `\u00d7 ${data.item.quantity}`);
       }
 
       if (subtotal) {
