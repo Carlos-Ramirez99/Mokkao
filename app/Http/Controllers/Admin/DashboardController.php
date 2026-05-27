@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pago;
 use App\Models\Pedido;
 use App\Models\Producto;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\View\View;
 
@@ -19,7 +20,7 @@ class DashboardController extends Controller
             'pedidosListos' => Pedido::where('estado', 'listo')->count(),
             'ventasRegistradas' => Pago::where('estado', 'pagado')->sum('monto'),
             'pedidosRecientes' => Pedido::with(['usuario', 'detalles.producto'])->latest('id_pedido')->take(5)->get(),
-            'clientes' => Pedido::distinct('id_usuario')->count('id_usuario'),
+            'clientes' => User::where('rol', 'cliente')->count(),
             'hoy' => Carbon::now()->locale('es')->translatedFormat('j M'),
         ]);
     }

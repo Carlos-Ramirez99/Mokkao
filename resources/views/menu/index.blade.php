@@ -38,7 +38,6 @@
                         </div>
                         <div class="shop-media">
                             <img src="{{ asset('appearance/shop/img/9bc1cf1e0ed4866dbe4463f6751acd52b86d4b4f.png') }}" alt="{{ $producto->nombre }}">
-                            <a href="#" aria-label="Ver más sobre {{ $producto->nombre }}">Ver más <span>→</span></a>
                         </div>
                     </article>
                 @endforeach

@@ -374,8 +374,10 @@ footer nav a:hover::after {
 }
 .newsletter { justify-self: end; width: min(389px, 100%); }
 .newsletter h2 { margin: 0 0 28px; font-size: 24px; font-weight: 400; }
-.newsletter form { display: flex; align-items: center; justify-content: space-between; height: 53px; padding: 15px 17px 14px 9px; border-radius: 34px; background: #fff; color: var(--wine); }
-.newsletter button { border: 0; background: transparent; color: var(--wine); font-size: 24px; }
+.newsletter form,
+.newsletter-mail { display: flex; align-items: center; justify-content: space-between; height: 53px; padding: 15px 17px 14px 9px; border-radius: 34px; background: #fff; color: var(--wine); }
+.newsletter button,
+.newsletter-mail span:last-child { border: 0; background: transparent; color: var(--wine); font-size: 24px; }
 .footer-logo { grid-column: 1 / -1; font-size: clamp(72px, 18vw, 265px); font-weight: 700; line-height: 1; }
 .copyright { grid-column: 1 / -1; margin: 0; }
 .home-hero {

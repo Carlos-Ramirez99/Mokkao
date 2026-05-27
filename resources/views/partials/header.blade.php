@@ -6,7 +6,7 @@
         <a href="{{ route('menu.index') }}">Carta</a>
         <a href="{{ route('about') }}">About</a>
     </div>
-    <a class="contact-pill" href="#contacto">Contacto</a>
+    <a class="contact-pill" href="mailto:hola@mokkao.com?subject=Contacto%20Mokkao">Contacto</a>
     @auth
         <details class="account-menu">
             <summary class="icon-pill" aria-label="Cuenta">

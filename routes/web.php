@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\SalesController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         ->parameters(['cupones' => 'cupon'])
         ->except('show')
         ->names('coupons');
+    Route::resource('clientes', CustomerController::class)
+        ->parameters(['clientes' => 'customer'])
+        ->only(['index', 'edit', 'update', 'destroy'])
+        ->names('customers');
     Route::get('/pedidos', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/pedidos/{pedido}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::patch('/pedidos/{pedido}', [AdminOrderController::class, 'update'])->name('orders.update');

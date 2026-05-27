@@ -7,10 +7,10 @@
     </nav>
     <div class="newsletter">
         <h2>Suscríbete a nuestra Newsletter</h2>
-        <form>
-            <label>Dirección electrónica</label>
-            <button aria-label="Enviar">→</button>
-        </form>
+        <a class="newsletter-mail" href="mailto:hola@mokkao.com?subject=Contacto%20Mokkao">
+            <span>Dirección electrónica</span>
+            <span aria-hidden="true">→</span>
+        </a>
     </div>
     <div class="footer-logo">MOKKAO<span>.</span></div>
     <p class="copyright">© Mokkao. Tecnología de Shopify</p>
