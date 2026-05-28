@@ -8,7 +8,7 @@ class Pedido extends Model
 {
     protected $table = 'pedidos';
     protected $primaryKey = 'id_pedido';
-    protected $fillable = ['id_usuario', 'id_sucursal', 'fecha', 'hora_recogida', 'estado', 'codigo_descuento', 'descuento', 'total'];
+    protected $fillable = ['id_usuario', 'id_sucursal', 'id_cupon', 'fecha', 'hora_recogida', 'estado', 'codigo_descuento', 'descuento', 'total'];
     protected $casts = ['fecha' => 'date', 'descuento' => 'decimal:2', 'total' => 'decimal:2'];
 
     public function usuario()
@@ -19,6 +19,11 @@ class Pedido extends Model
     public function sucursal()
     {
         return $this->belongsTo(Sucursal::class, 'id_sucursal', 'id_sucursal');
+    }
+
+    public function cupon()
+    {
+        return $this->belongsTo(Cupon::class, 'id_cupon', 'id_cupon');
     }
 
     public function detalles()

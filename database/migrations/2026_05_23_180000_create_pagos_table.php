@@ -9,13 +9,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pagos', function (Blueprint $table) {
-            $table->id('id_pago');
-            $table->foreignId('id_pedido')->unique()->constrained('pedidos', 'id_pedido')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->increments('id_pago');
+            $table->unsignedInteger('id_pedido')->unique();
             $table->enum('metodo_pago', ['tarjeta', 'efectivo', 'paypal', 'bizum']);
             $table->decimal('monto', 8, 2);
             $table->enum('estado', ['pendiente', 'pagado', 'rechazado', 'cancelado'])->default('pendiente');
             $table->dateTime('fecha_pago')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_pedido')
+                ->references('id_pedido')
+                ->on('pedidos')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

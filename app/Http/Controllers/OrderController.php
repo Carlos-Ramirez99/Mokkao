@@ -64,12 +64,13 @@ class OrderController extends Controller
 
         $pedido = DB::transaction(function () use ($validated, $cart, $productos) {
             $subtotal = (float) $cart->sum(fn ($item) => $productos[$item['id_producto']]->precio * $item['cantidad']);
-            [$discountCode, $discount] = $this->activeDiscount($subtotal);
+            [$discountCode, $discount, $cuponId] = $this->activeDiscount($subtotal);
             $total = max(0, $subtotal - $discount);
 
             $pedido = Pedido::create([
                 'id_usuario' => auth()->id(),
                 'id_sucursal' => $validated['id_sucursal'],
+                'id_cupon' => $discount > 0 ? $cuponId : null,
                 'fecha' => $validated['fecha'],
                 'hora_recogida' => $validated['hora_recogida'],
                 'estado' => 'pendiente',
@@ -118,21 +119,21 @@ class OrderController extends Controller
         $code = session('discount.code');
 
         if (! $code) {
-            return [null, 0];
+            return [null, 0, null];
         }
 
         $cupon = Cupon::where('codigo', $code)->where('activo', true)->first();
 
         if (! $cupon || $this->discountAlreadyUsed($cupon->codigo)) {
             session()->forget('discount');
-            return [null, 0];
+            return [null, 0, null];
         }
 
         $discount = $cupon->tipo === 'porcentaje'
             ? $subtotal * ((float) $cupon->valor / 100)
             : (float) $cupon->valor;
 
-        return [$cupon->codigo, round(min($discount, $subtotal), 2)];
+        return [$cupon->codigo, round(min($discount, $subtotal), 2), $cupon->id_cupon];
     }
 
     private function discountAlreadyUsed(string $code): bool

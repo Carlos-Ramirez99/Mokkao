@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sucursales', function (Blueprint $table) {
-            $table->id('id_sucursal');
+            $table->increments('id_sucursal');
             $table->string('nombre', 100);
             $table->string('direccion', 255);
             $table->string('telefono', 20)->nullable();
@@ -17,42 +17,70 @@ return new class extends Migration
         });
 
         Schema::create('categorias', function (Blueprint $table) {
-            $table->id('id_categoria');
+            $table->increments('id_categoria');
             $table->string('nombre', 100);
             $table->text('descripcion')->nullable();
             $table->timestamps();
         });
 
         Schema::create('productos', function (Blueprint $table) {
-            $table->id('id_producto');
-            $table->foreignId('id_categoria')->constrained('categorias', 'id_categoria')->restrictOnDelete()->cascadeOnUpdate();
+            $table->increments('id_producto');
+            $table->unsignedInteger('id_categoria');
             $table->string('nombre', 100);
             $table->text('descripcion')->nullable();
             $table->text('alergenos')->nullable();
             $table->decimal('precio', 8, 2);
             $table->boolean('disponible')->default(true);
             $table->timestamps();
+
+            $table->foreign('id_categoria')
+                ->references('id_categoria')
+                ->on('categorias')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
         });
 
         Schema::create('pedidos', function (Blueprint $table) {
-            $table->id('id_pedido');
-            $table->foreignId('id_usuario')->constrained('usuarios', 'id_usuario')->restrictOnDelete()->cascadeOnUpdate();
-            $table->foreignId('id_sucursal')->constrained('sucursales', 'id_sucursal')->restrictOnDelete()->cascadeOnUpdate();
+            $table->increments('id_pedido');
+            $table->unsignedInteger('id_usuario');
+            $table->unsignedInteger('id_sucursal');
             $table->date('fecha');
             $table->time('hora_recogida');
             $table->enum('estado', ['pendiente', 'en_preparacion', 'listo', 'recogido', 'cancelado'])->default('pendiente');
             $table->decimal('total', 8, 2)->default(0);
             $table->timestamps();
+
+            $table->foreign('id_usuario')
+                ->references('id_usuario')
+                ->on('usuarios')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreign('id_sucursal')
+                ->references('id_sucursal')
+                ->on('sucursales')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
         });
 
         Schema::create('detalle_pedido', function (Blueprint $table) {
-            $table->id('id_detalle');
-            $table->foreignId('id_pedido')->constrained('pedidos', 'id_pedido')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('id_producto')->constrained('productos', 'id_producto')->restrictOnDelete()->cascadeOnUpdate();
+            $table->increments('id_detalle');
+            $table->unsignedInteger('id_pedido');
+            $table->unsignedInteger('id_producto');
             $table->unsignedInteger('cantidad')->default(1);
             $table->decimal('precio_unitario', 8, 2);
             $table->text('notas')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_pedido')
+                ->references('id_pedido')
+                ->on('pedidos')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreign('id_producto')
+                ->references('id_producto')
+                ->on('productos')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
