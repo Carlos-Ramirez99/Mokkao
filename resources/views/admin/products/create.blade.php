@@ -8,7 +8,7 @@
         <section class="auth-card wide-card admin-form-card">
             <p class="eyebrow">Catálogo</p>
             <h1>Nuevo producto</h1>
-            <form method="POST" action="{{ route('admin.products.store') }}">
+            <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
                 @csrf
                 @include('admin.products.form', ['producto' => null])
                 <button type="submit">Guardar producto</button>

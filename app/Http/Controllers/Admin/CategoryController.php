@@ -18,4 +18,17 @@ class CategoryController extends Controller
 
         return back()->with('success', 'Categoría creada.');
     }
+
+    public function destroy(Categoria $category): RedirectResponse
+    {
+        if ($category->productos()->exists()) {
+            return back()->withErrors([
+                'categoria' => 'No se puede eliminar una categoria con productos asociados.',
+            ]);
+        }
+
+        $category->delete();
+
+        return back()->with('success', 'Categoria eliminada.');
+    }
 }

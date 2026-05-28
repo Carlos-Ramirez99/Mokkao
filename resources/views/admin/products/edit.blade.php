@@ -8,7 +8,7 @@
         <section class="auth-card wide-card admin-form-card">
             <p class="eyebrow">Catálogo</p>
             <h1>Editar producto</h1>
-            <form method="POST" action="{{ route('admin.products.update', $producto) }}">
+            <form method="POST" action="{{ route('admin.products.update', $producto) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 @include('admin.products.form')

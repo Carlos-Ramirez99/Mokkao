@@ -25,11 +25,48 @@
             </form>
         </section>
 
+        <section class="inline-card">
+            <h2>Categorias</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Productos</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($categorias as $categoria)
+                            <tr>
+                                <td>{{ $categoria->nombre }}</td>
+                                <td>{{ $categoria->productos_count }}</td>
+                                <td class="actions">
+                                    @if ($categoria->productos_count === 0)
+                                        <form method="POST" action="{{ route('admin.categories.destroy', $categoria) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="link-button">Eliminar</button>
+                                        </form>
+                                    @else
+                                        <span>No se puede eliminar</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="3">No hay categorias creadas.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
                         <th>Producto</th>
+                        <th>Imagen</th>
                         <th>Categoría</th>
                         <th>Precio</th>
                         <th>Disponibilidad</th>
@@ -40,6 +77,13 @@
                     @foreach ($productos as $producto)
                         <tr>
                             <td>{{ $producto->nombre }}</td>
+                            <td>
+                                @if ($producto->imagen)
+                                    <img class="table-thumb" src="{{ asset($producto->imagen) }}" alt="{{ $producto->nombre }}">
+                                @else
+                                    Sin imagen
+                                @endif
+                            </td>
                             <td>{{ $producto->categoria->nombre }}</td>
                             <td>{{ number_format($producto->precio, 2) }} €</td>
                             <td>{{ $producto->disponible ? 'Disponible' : 'Oculto' }}</td>

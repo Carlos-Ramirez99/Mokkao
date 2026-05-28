@@ -16,6 +16,15 @@
 <label>Alérgenos
     <input name="alergenos" value="{{ old('alergenos', $producto->alergenos ?? '') }}">
 </label>
+<label>Imagen
+    <input type="file" name="imagen" accept="image/jpeg,image/png,image/webp">
+</label>
+@if (! empty($producto?->imagen))
+    <div class="product-image-preview">
+        <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->nombre }}">
+        <span>Sube otra imagen para reemplazarla.</span>
+    </div>
+@endif
 <label>Precio
     <input type="number" name="precio" step="0.01" min="0" value="{{ old('precio', $producto->precio ?? '') }}" required>
 </label>

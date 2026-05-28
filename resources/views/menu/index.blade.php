@@ -37,7 +37,7 @@
                             <p>{{ $producto->descripcion }}</p>
                         </div>
                         <div class="shop-media">
-                            <img src="{{ asset('appearance/shop/img/9bc1cf1e0ed4866dbe4463f6751acd52b86d4b4f.png') }}" alt="{{ $producto->nombre }}">
+                            <img src="{{ asset($producto->imagen ?: 'appearance/shop/img/9bc1cf1e0ed4866dbe4463f6751acd52b86d4b4f.png') }}" alt="{{ $producto->nombre }}">
                         </div>
                     </article>
                 @endforeach

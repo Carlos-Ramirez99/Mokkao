@@ -8,7 +8,7 @@ class Producto extends Model
 {
     protected $table = 'productos';
     protected $primaryKey = 'id_producto';
-    protected $fillable = ['id_categoria', 'nombre', 'descripcion', 'alergenos', 'precio', 'disponible'];
+    protected $fillable = ['id_categoria', 'nombre', 'descripcion', 'alergenos', 'precio', 'disponible', 'imagen'];
     protected $casts = ['disponible' => 'boolean', 'precio' => 'decimal:2'];
 
     public function categoria()
